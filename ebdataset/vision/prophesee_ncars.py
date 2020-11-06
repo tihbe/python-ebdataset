@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from torch.utils import data
-from ebdataset.vision.parsers.atis import readATISFile
+from .parsers.atis import readATISFile
 
 
 class PropheseeNCars(data.Dataset):

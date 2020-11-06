@@ -5,8 +5,8 @@ import numpy as np
 from torch.utils import data
 import h5py
 from tqdm import tqdm
-from ebdataset.vision.parsers.aedat import readAEDATv3
-from ebdataset.vision.type import DVSSpikeTrain
+from .parsers.aedat import readAEDATv3
+from .type import DVSSpikeTrain
 
 
 class IBMGesture(object):

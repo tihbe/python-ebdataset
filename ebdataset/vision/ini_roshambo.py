@@ -2,7 +2,7 @@ import os
 import numpy as np
 from h5py import File
 from tqdm import tqdm
-from ebdataset.vision.parsers.aedat import readAEDATv2_davies
+from .parsers.aedat import readAEDATv2_davies
 from torch.utils.data.dataset import Dataset
 from .type import DVSSpikeTrain
 from quantities import us
