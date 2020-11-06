@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from torch.utils import data
-from ebdataset.vision.parsers.aer import readAERFile
+from .parsers.aer import readAERFile
 
 
 class NMnist(data.Dataset):

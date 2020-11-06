@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from torch.utils import data
-from ebdataset.vision.parsers.aedat import readAEDATv2_davies
+from .parsers.aedat import readAEDATv2_davies
 
 
 class INIUCF50(data.Dataset):
