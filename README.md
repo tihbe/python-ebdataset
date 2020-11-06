@@ -45,7 +45,7 @@ Frontiers in Neuroscience, vol.9, no.437, Oct. 2015. Available for download at h
 In the code:
 ```python
 from ebdataset.vision import NMnist
-from ebdataset.transforms import ToDense
+from ebdataset.vision.transforms import ToDense
 from quantities import ms
 
 # With sparse representation:
