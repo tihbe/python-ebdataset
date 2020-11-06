@@ -39,6 +39,11 @@ Frontiers in Neuroscience, vol.9, no.437, Oct. 2015. Available for download at h
     “HATS: Histograms of Averaged Time Surfaces for Robust Event-based Object Classification”.
     To appear in IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2018. Available for download at https://www.prophesee.ai/2018/03/13/dataset-n-cars/
 
+# Installation
+You can install the latest version of this package with:
+```bash
+pip install git+https://github.com/tihbe/python-ebdataset.git
+```
 
 # Usage
 
