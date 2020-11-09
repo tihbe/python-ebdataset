@@ -7,7 +7,7 @@ setup(
     author="Ismael Balafrej - NECOTIS",
     author_email="ismael dot balafrej at usherbrooke dot ca",
     url="http://www.gel.usherbrooke.ca/necotis/",
-    packages=["ebdataset", "ebdataset.vision", "ebdataset.audio", "ebdataset.vision.parsers"],
+    packages=["ebdataset", "ebdataset.vision", "ebdataset.audio", "ebdataset.vision.parsers", "ebdataset.utils"],
     install_requires=[
         "numpy>=1.14.3",
         "opencv-python>=4.2.0",
