@@ -60,7 +60,7 @@ for spike_train, label in NMnist(path):
 
 # Or use the pytorch transforms API for dense tensors
 dt = 1*ms
-loader = NMnist(path, is_train=True, transform=ToDense(dt))
+loader = NMnist(path, is_train=True, transforms=ToDense(dt))
 for spike_train, label in loader:
     spike_train.shape # => (34, 34, 2, duration of sample)
     break
