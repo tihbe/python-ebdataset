@@ -45,7 +45,7 @@ You can install the latest version of this package with:
 pip install git+https://github.com/tihbe/python-ebdataset.git
 ```
 
-# Usage
+# Getting started
 
 In the code:
 ```python
