@@ -12,9 +12,7 @@ class NTidigits(data.Dataset):
     Available for download at https://docs.google.com/document/d/1Uxe7GsKKXcy6SlDUX4hoJVAC0-UkH-8kr5UXp0Ndi1M
     """
 
-    def __init__(
-        self, path: str, is_train=True, transforms=None, only_single_digits=False
-    ):
+    def __init__(self, path: str, is_train=True, transforms=None, only_single_digits=False):
         assert os.path.exists(path)
         self.prename = "train" if is_train else "test"
         self.path = path
@@ -24,11 +22,7 @@ class NTidigits(data.Dataset):
             self.samples = f[self.prename + "_labels"][()]
 
         if only_single_digits:
-            self.samples = list(
-                filter(
-                    lambda s: len(NTidigits._get_label_for_sample(s)) == 1, self.samples
-                )
-            )
+            self.samples = list(filter(lambda s: len(NTidigits._get_label_for_sample(s)) == 1, self.samples))
 
     @staticmethod
     def _get_label_for_sample(sample_id):
@@ -43,9 +37,7 @@ class NTidigits(data.Dataset):
             addresses = f[self.prename + "_addresses"][sample_id][()]
             ts = f[self.prename + "_timestamps"][sample_id][()]
 
-        sparse_spike_train = np.recarray(
-            shape=len(ts), dtype=[("addr", addresses.dtype), ("ts", ts.dtype)]
-        )
+        sparse_spike_train = np.recarray(shape=len(ts), dtype=[("addr", addresses.dtype), ("ts", ts.dtype)])
         sparse_spike_train.addr = addresses
         sparse_spike_train.ts = ts
 

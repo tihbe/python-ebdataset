@@ -6,9 +6,9 @@ An event based dataset loader under one common python (>=3.5) API built on top o
 # Supported datasets
 
 1. Neuromorphic Mnist dataset from
-Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.
-“Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades",
-Frontiers in Neuroscience, vol.9, no.437, Oct. 2015. Available for download at https://www.garrickorchard.com/datasets/n-mnist
+    Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.
+    “Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades",
+    Frontiers in Neuroscience, vol.9, no.437, Oct. 2015. Available for download at https://www.garrickorchard.com/datasets/n-mnist
 
 2. NCaltech101 dataset from
     Orchard, G.; Cohen, G.; Jayawant, A.; and Thakor, N.
@@ -42,7 +42,7 @@ Frontiers in Neuroscience, vol.9, no.437, Oct. 2015. Available for download at h
 # Installation
 You can install the latest version of this package with:
 ```bash
-pip install git+https://github.com/tihbe/python-ebdataset.git
+pip install ebdataset
 ```
 
 # Getting started
@@ -72,3 +72,7 @@ python -m ebdataset.visualization.spike_train_to_vid NMnist path
 ```
 
 ![](images/nmnist-2.gif) ![](images/nmnist-9.gif)
+
+# Contributing
+
+Feel free to create a pull request if you're interested in this project. 

@@ -56,10 +56,12 @@ class NMnist(data.Dataset):
         test_url = "https://www.dropbox.com/sh/tg2ljlbmtzygrag/AADSKgJ2CjaBWh75HnTNZyhca/Test.zip?dl=1"
         train_loc = os.path.join(output_directory, "Train%i.zip" % time.time())
         test_loc = os.path.join(output_directory, "Test%i.zip" % time.time())
-        success = download(train_url, train_loc, desc="Downloading training files") and \
-            unzip(train_loc, output_directory, desc="Extracting training files") and \
-            download(test_url, test_loc, desc="Downloading test files") and \
-            unzip(test_loc, output_directory, desc="Extracting test files")
+        success = (
+            download(train_url, train_loc, desc="Downloading training files")
+            and unzip(train_loc, output_directory, desc="Extracting training files")
+            and download(test_url, test_loc, desc="Downloading test files")
+            and unzip(test_loc, output_directory, desc="Extracting test files")
+        )
 
         if success:
             os.remove(train_loc)

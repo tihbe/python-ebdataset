@@ -30,9 +30,7 @@ class INIRoshambo(Dataset):
 
         if os.path.isdir(path):  # AEDat v2 directory
             self.backend = "aedat"
-            self.samples = filter(
-                lambda f: os.path.splitext(f)[1] == ".aedat", os.listdir(path)
-            )
+            self.samples = filter(lambda f: os.path.splitext(f)[1] == ".aedat", os.listdir(path))
         elif os.path.splitext(path)[1] == ".h5":
             self.backend = "h5"
             with File(path, "r", libver="latest") as f_hndl:
@@ -54,9 +52,7 @@ class INIRoshambo(Dataset):
         :return: New Roshambo object with h5 file as backend
         """
 
-        if (
-            self.backend == "h5"
-        ):  # Send back object if we're already using an h5 backend
+        if self.backend == "h5":  # Send back object if we're already using an h5 backend
             return self
 
         if not (".h5" in out_path):
@@ -64,17 +60,11 @@ class INIRoshambo(Dataset):
 
         with File(out_path, "w-", libver="latest") as f_hndl:
             for sample_id in tqdm(self.samples, disable=not verbose):
-                sparse_spike_train = readAEDATv2_davies(
-                    os.path.join(self.path, sample_id)
-                )
-                sparse_spike_train.ts = sparse_spike_train.ts - np.min(
-                    sparse_spike_train.ts
-                )  # Start the sample at t=0
+                sparse_spike_train = readAEDATv2_davies(os.path.join(self.path, sample_id))
+                sparse_spike_train.ts = sparse_spike_train.ts - np.min(sparse_spike_train.ts)  # Start the sample at t=0
                 f_hndl[sample_id] = sparse_spike_train
 
-        return INIRoshambo(
-            out_path, with_backgrounds=self.with_backgrounds, transforms=self.transforms
-        )
+        return INIRoshambo(out_path, with_backgrounds=self.with_backgrounds, transforms=self.transforms)
 
     def split_to_subsamples(self, out_path, duration_per_sample, verbose=False):
         if not (".h5" in out_path):
@@ -96,15 +86,11 @@ class INIRoshambo(Dataset):
                 ):
                     if start_time + duration_per_sample > total_duration:  # End
                         break
-                    sub_mask = (sample.ts >= start_time) & (
-                        sample.ts < start_time + duration_per_sample
-                    )
+                    sub_mask = (sample.ts >= start_time) & (sample.ts < start_time + duration_per_sample)
                     nb_of_spikes = np.sum(sub_mask)
                     if nb_of_spikes <= 10:
                         continue
-                    sub_sample = DVSSpikeTrain(
-                        nb_of_spikes, duration=duration_per_sample
-                    )
+                    sub_sample = DVSSpikeTrain(nb_of_spikes, duration=duration_per_sample)
                     sub_sample.ts = sample.ts[sub_mask]
                     sub_sample.ts = sub_sample.ts - np.min(sub_sample.ts)  # Start at 0
                     sub_sample.x = sample.x[sub_mask]
@@ -121,15 +107,11 @@ class INIRoshambo(Dataset):
         if self.backend == "aedat":
             filename = os.path.join(self.path, sample_id)
             sparse_spike_train = readAEDATv2_davies(filename)
-            sparse_spike_train.ts = sparse_spike_train.ts - np.min(
-                sparse_spike_train.ts
-            )  # Start the sample at t=0
+            sparse_spike_train.ts = sparse_spike_train.ts - np.min(sparse_spike_train.ts)  # Start the sample at t=0
         elif self.backend == "h5":
             with File(self.path, "r", libver="latest") as f_hndl:
                 sparse_spike_train = f_hndl[sample_id][()]
-            sparse_spike_train = np.rec.array(
-                sparse_spike_train, dtype=sparse_spike_train.dtype
-            ).view(DVSSpikeTrain)
+            sparse_spike_train = np.rec.array(sparse_spike_train, dtype=sparse_spike_train.dtype).view(DVSSpikeTrain)
 
         sparse_spike_train.width = 240
         sparse_spike_train.height = 180

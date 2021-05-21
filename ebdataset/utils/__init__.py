@@ -28,7 +28,11 @@ def unzip(zip_file_path, output_directory, verbose=True, desc="Extracting"):
     with ZipFile(zip_file_path, "r") as zf:
         size = sum((f.file_size for f in zf.infolist()))
         with tqdm(
-            total=size, unit="B", unit_scale=True, desc=desc, disable=not verbose,
+            total=size,
+            unit="B",
+            unit_scale=True,
+            desc=desc,
+            disable=not verbose,
         ) as pbar:
             for file in zf.infolist():
                 if file.is_dir():

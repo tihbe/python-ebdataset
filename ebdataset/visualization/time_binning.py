@@ -13,7 +13,6 @@ from ebdataset.vision import (
     PropheseeNCars,
 )
 from ebdataset.audio import NTidigits
-import seaborn as sns
 
 assert __name__ == "__main__", "This script is meant to be run as main"
 
@@ -30,21 +29,23 @@ available_datasets = [
     PropheseeNCars,
     NTidigits,
 ]
-dataset_map = dict(
-    zip([dataset.__name__ for dataset in available_datasets], available_datasets)
-)
+dataset_map = dict(zip([dataset.__name__ for dataset in available_datasets], available_datasets))
 
+parser.add_argument("dataset", help="Dataset - One of [%s]" % " | ".join(dataset_map.keys()))
+parser.add_argument("path", help="Path of the data directory or file for the chosen dataset")
 parser.add_argument(
-    "dataset", help="Dataset - One of [%s]" % " | ".join(dataset_map.keys())
+    "-i",
+    "--id",
+    help="Sample ID",
+    type=int,
+    default=-1,
 )
 parser.add_argument(
-    "path", help="Path of the data directory or file for the chosen dataset"
-)
-parser.add_argument(
-    "-i", "--id", help="Sample ID", type=int, default=-1,
-)
-parser.add_argument(
-    "-b", "--bin_size", help="Size of the bin (ms)", type=float, default=1.0,
+    "-b",
+    "--bin_size",
+    help="Size of the bin (ms)",
+    type=float,
+    default=1.0,
 )
 
 args = parser.parse_args()
@@ -60,11 +61,9 @@ duration = spike_train.ts.max() + 1
 time_scale = getattr(spike_train, "time_scale", 1)
 nb_bins = np.ceil(duration * time_scale * (1000.0 / args.bin_size)).astype(int)
 
-sns.set()
 fig, ax = plt.subplots()
 ax.set_title(
-    "Spike counts binned with size %.2f ms for dataset %s sample #%i"
-    % (args.bin_size, args.dataset, sample_id)
+    "Spike counts binned with size %.2f ms for dataset %s sample #%i" % (args.bin_size, args.dataset, sample_id)
 )
 ax.hist(spike_train.ts * time_scale, bins=nb_bins)
 plt.show()

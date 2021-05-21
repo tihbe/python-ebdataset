@@ -8,8 +8,7 @@ from torchvision.transforms import Compose
 
 
 class ScaleDown(object):
-    """Scale down a 2d sparse spike train by factor (both in x and y)
-    """
+    """Scale down a 2d sparse spike train by factor (both in x and y)"""
 
     def __init__(self, width, height, factor):
         self.authorized_x = list(range(0, width, factor))
@@ -65,10 +64,7 @@ class ToDense(object):
         ts = (sparse_spike_train.ts * time_scale).astype(int)
 
         dense_spike_train[
-            sparse_spike_train.x.astype(int),
-            sparse_spike_train.y.astype(int),
-            sparse_spike_train.p.astype(int),
-            ts
+            sparse_spike_train.x.astype(int), sparse_spike_train.y.astype(int), sparse_spike_train.p.astype(int), ts
         ] = 1
 
         return dense_spike_train

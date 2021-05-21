@@ -28,16 +28,10 @@ available_datasets = [
     NMnist,
     PropheseeNCars,
 ]
-dataset_map = dict(
-    zip([dataset.__name__ for dataset in available_datasets], available_datasets)
-)
+dataset_map = dict(zip([dataset.__name__ for dataset in available_datasets], available_datasets))
 
-parser.add_argument(
-    "dataset", help="Dataset - One of [%s]" % " | ".join(dataset_map.keys())
-)
-parser.add_argument(
-    "path", help="Path of the data directory or file for the chosen dataset"
-)
+parser.add_argument("dataset", help="Dataset - One of [%s]" % " | ".join(dataset_map.keys()))
+parser.add_argument("path", help="Path of the data directory or file for the chosen dataset")
 parser.add_argument(
     "-n",
     "--num_samples",
@@ -45,12 +39,8 @@ parser.add_argument(
     type=int,
     default=10,
 )
-parser.add_argument(
-    "-d", "--dilatation", help="Time dilatation scale", type=float, default=1.0
-)  # Default Real time
-parser.add_argument(
-    "-s", "--scale", help="Spatial scaling", type=float, default=1.0
-)  # Default Real size
+parser.add_argument("-d", "--dilatation", help="Time dilatation scale", type=float, default=1.0)  # Default Real time
+parser.add_argument("-s", "--scale", help="Spatial scaling", type=float, default=1.0)  # Default Real size
 
 args = parser.parse_args()
 dataset = dataset_map[args.dataset]
@@ -70,17 +60,13 @@ for i, sample_id in enumerate(tqdm(sample_idx)):
         int(spike_train.height * spatial_scale),
     )
     out_duration = spike_train.duration * spike_train.time_scale * time_scale
-    out = cv2.VideoWriter(
-        filename, cv2.VideoWriter_fourcc(*"MP42"), 60.0, (out_width, out_height)
-    )
+    out = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc(*"MP42"), 60.0, (out_width, out_height))
     for frame_start in np.arange(0.0, out_duration, 1 / 60.0):
         frame_end = frame_start + 1 / 60.0
         ts = spike_train.ts * spike_train.time_scale * time_scale
         mask = (ts >= frame_start) & (ts < frame_end)
         frame = np.zeros((out_width, out_height, 3), dtype=np.uint8)
-        for x, y, p in zip(
-            spike_train.x[mask], spike_train.y[mask], spike_train.p[mask]
-        ):
+        for x, y, p in zip(spike_train.x[mask], spike_train.y[mask], spike_train.p[mask]):
             frame[
                 int(x * spatial_scale) : int((x + 1) * spatial_scale),
                 int(y * spatial_scale) : int((y + 1) * spatial_scale),

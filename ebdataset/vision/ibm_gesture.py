@@ -61,15 +61,11 @@ class IBMGesture(object):
 
         # Read train trials file
         with open(os.path.join(path, self._TRAIN_TRIALS_FILE), "r") as f:
-            self._TRAIN_FILES = map(
-                lambda d: os.path.join(path, d.rstrip()), f.readlines()
-            )
+            self._TRAIN_FILES = map(lambda d: os.path.join(path, d.rstrip()), f.readlines())
 
         # Read test trials file
         with open(os.path.join(path, self._TEST_TRIALS_FILE), "r") as f:
-            self._TEST_FILES = map(
-                lambda d: os.path.join(path, d.rstrip()), f.readlines()
-            )
+            self._TEST_FILES = map(lambda d: os.path.join(path, d.rstrip()), f.readlines())
 
         self._TRAIN_FILES = list(filter(lambda f: os.path.isfile(f), self._TRAIN_FILES))
         self._TEST_FILES = list(filter(lambda f: os.path.isfile(f), self._TEST_FILES))
@@ -80,9 +76,7 @@ class IBMGesture(object):
 
     def _read_labels(self, file: str) -> np.array:
         assert os.path.exists(file), "File %s doesn't exist" % file
-        return np.genfromtxt(
-            file, delimiter=",", skip_header=1, dtype=self._LABELS_DTYPE
-        )
+        return np.genfromtxt(file, delimiter=",", skip_header=1, dtype=self._LABELS_DTYPE)
 
     def _parse_filename(self, file: str) -> Tuple[str, str, str]:
         trial = re.search(r"^user([0-9]+)_(.+)\.(aedat|csv)$", file, re.IGNORECASE)
@@ -108,13 +102,9 @@ class IBMGesture(object):
             labels = self._read_labels(file.replace(".aedat", "_labels.csv"))
             multilabel_spike_train = readAEDATv3(file)
             for (label_id, start_time, end_time) in labels:
-                event_mask = (multilabel_spike_train.ts >= start_time) & (
-                    multilabel_spike_train.ts < end_time
-                )
+                event_mask = (multilabel_spike_train.ts >= start_time) & (multilabel_spike_train.ts < end_time)
                 ts = multilabel_spike_train.ts[event_mask] - start_time
-                spike_train = DVSSpikeTrain(
-                    ts.size, width=128, height=128, duration=end_time - start_time + 1
-                )
+                spike_train = DVSSpikeTrain(ts.size, width=128, height=128, duration=end_time - start_time + 1)
                 spike_train.ts = ts
                 spike_train.x = multilabel_spike_train.x[event_mask]
                 spike_train.y = multilabel_spike_train.y[event_mask]
@@ -165,9 +155,7 @@ class H5IBMGesture(data.Dataset):
         """
         _, file_extension = os.path.splitext(path)
         if file_extension != ".h5":
-            raise Exception(
-                "The dvs gesture must first be converted to a .h5 file. Please call H5DvsGesture.Convert"
-            )
+            raise Exception("The dvs gesture must first be converted to a .h5 file. Please call H5DvsGesture.Convert")
 
         self.indx = 0 if is_train else 1
         self.file_path = path
@@ -189,9 +177,7 @@ class H5IBMGesture(data.Dataset):
         position_type = h5py.vlen_dtype(np.dtype("uint16"))
         time_type = h5py.vlen_dtype(np.dtype("uint32"))
 
-        step_counter = tqdm(
-            total=sum(H5IBMGesture._nb_of_samples), disable=(not verbose)
-        )
+        step_counter = tqdm(total=sum(H5IBMGesture._nb_of_samples), disable=(not verbose))
 
         with h5py.File(h5_output_path, "w-") as f:
             for (name, gen, length) in zip(
@@ -223,9 +209,7 @@ class H5IBMGesture(data.Dataset):
             tos = file_hndl[name + "_tos"][index]
             label = file_hndl[name + "_label"][index]
 
-        spike_train = DVSSpikeTrain(
-            tos.size, width=128, height=128, duration=tos.max() + 1
-        )
+        spike_train = DVSSpikeTrain(tos.size, width=128, height=128, duration=tos.max() + 1)
         spike_train.x = pos[0]
         spike_train.y = pos[1]
         spike_train.p = pos[2]

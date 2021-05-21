@@ -1,8 +1,6 @@
 import numpy as np
 
-_dtype = np.dtype(
-    [("x", np.uint16), ("y", np.uint16), ("p", np.bool_), ("ts", np.uint64)]
-)
+_dtype = np.dtype([("x", np.uint16), ("y", np.uint16), ("p", np.bool_), ("ts", np.uint64)])
 
 
 class DVSSpikeTrain(np.recarray):
@@ -10,19 +8,8 @@ class DVSSpikeTrain(np.recarray):
 
     __name__ = "SparseVisionSpikeTrain"
 
-    def __new__(
-        cls,
-        nb_of_spikes,
-        *args,
-        width=-1,
-        height=-1,
-        duration=-1,
-        time_scale=1e-6,
-        **nargs
-    ):
-        obj = super(DVSSpikeTrain, cls).__new__(
-            cls, nb_of_spikes, dtype=_dtype, *args, **nargs
-        )
+    def __new__(cls, nb_of_spikes, *args, width=-1, height=-1, duration=-1, time_scale=1e-6, **nargs):
+        obj = super(DVSSpikeTrain, cls).__new__(cls, nb_of_spikes, dtype=_dtype, *args, **nargs)
         obj.width = width
         obj.height = height
         obj.duration = duration
