@@ -61,7 +61,7 @@ class ParityTask(data.IterableDataset):
                     ] = self.gen.poisson(lam=self.high_freq, size=(self.features_per_bit, self.duration_per_bit))
 
             if self.as_recarray:
-                addr, ts = np.nonzero(spike_train)
+                ts, addr = np.nonzero(spike_train.T)
                 sample = np.recarray(shape=len(ts), dtype=[("addr", addr.dtype), ("ts", ts.dtype)])
                 sample.addr = addr
                 sample.ts = ts
