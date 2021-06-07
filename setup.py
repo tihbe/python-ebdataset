@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="ebdataset",
-    version="0.0.1",
+    version="0.0.2",
     author="Ismael Balafrej - NECOTIS",
     author_email="ismael.balafrej@usherbrooke.ca",
     description="An event based dataset loader under one common API.",

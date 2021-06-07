@@ -8,7 +8,7 @@ class ParityTask(data.IterableDataset):
     if max_iter is not specified or is np.inf, this dataset will keep generating samples forever
     each HIGH bits is encoded with high_freq poisson-sampled spikes of shape features_per_bit x duration_per_bit
     LOW bits and background-noise is encoded with low_freq poisson-sampled spikes for the remaining of the sample_duration
-    bits are encoded both temporally and spatially
+    bits are encoded both temporally and spatially if sequential=True, otherwise only spatially
     """
 
     def __init__(
@@ -23,6 +23,7 @@ class ParityTask(data.IterableDataset):
         dt=1 * ms,
         max_iter=np.inf,
         as_recarray=True,
+        sequential=True,
     ):
         self.seed = seed
         self.max_iter = max_iter
@@ -34,6 +35,11 @@ class ParityTask(data.IterableDataset):
         self.number_of_bits = number_of_bits
         self.features_per_bit = features_per_bit
         self.as_recarray = as_recarray
+        self.sequential = sequential
+        if sequential:
+            assert (
+                duration_per_bit * number_of_bits >= sample_duration
+            ), "Sample duration is not enough to contain every bits"
 
     def __iter__(self):
         worker_info = data.get_worker_info()
@@ -55,9 +61,13 @@ class ParityTask(data.IterableDataset):
 
             for b in range(self.number_of_bits):
                 if bits[b]:
+                    time_pos = (
+                        slice(b * self.duration_per_bit, (b + 1) * self.duration_per_bit)
+                        if self.sequential
+                        else slice(self.duration_per_bit)
+                    )
                     spike_train[
-                        b * self.features_per_bit : (b + 1) * self.features_per_bit,
-                        b * self.duration_per_bit : (b + 1) * self.duration_per_bit,
+                        b * self.features_per_bit : (b + 1) * self.features_per_bit, time_pos
                     ] = self.gen.poisson(lam=self.high_freq, size=(self.features_per_bit, self.duration_per_bit))
 
             if self.as_recarray:
