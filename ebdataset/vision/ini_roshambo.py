@@ -5,7 +5,7 @@ from tqdm import tqdm
 from .parsers.aedat import readAEDATv2_davies
 from torch.utils.data.dataset import Dataset
 from .type import DVSSpikeTrain
-from quantities import us
+from ..utils.units import us, wunits
 
 
 class INIRoshambo(Dataset):
@@ -66,11 +66,12 @@ class INIRoshambo(Dataset):
 
         return INIRoshambo(out_path, with_backgrounds=self.with_backgrounds, transforms=self.transforms)
 
+    @wunits(None, (None, None, us, None))
     def split_to_subsamples(self, out_path, duration_per_sample, verbose=False):
         if not (".h5" in out_path):
             out_path += ".h5"
 
-        duration_per_sample = int(duration_per_sample.rescale(us).magnitude)
+        duration_per_sample = int(duration_per_sample)
 
         with File(out_path, "w-", libver="latest") as f_hndl:
             for i, (sample, label) in enumerate(tqdm(self, disable=not verbose)):

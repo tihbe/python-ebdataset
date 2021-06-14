@@ -3,7 +3,7 @@ Torchvision-like transforms for 2d sparse rec-array spike trains
 """
 import torch
 import numpy as np
-import quantities as units
+from ..utils.units import second, us, ms, wunits
 from torchvision.transforms import Compose
 
 
@@ -32,8 +32,9 @@ class ScaleDown(object):
 class MaxTime(object):
     """Limit the time of a 2d sparse spike train"""
 
-    def __init__(self, max_time: units.UnitTime, dt: units.UnitTime = 1 * units.us):
-        self.max = (max_time.rescale(dt.units) / dt).magnitude
+    @wunits(None, (None, second, second))
+    def __init__(self, max_time, dt=1 * us):
+        self.max = max_time / dt
 
     def __call__(self, sparse_spike_train):
         mask = sparse_spike_train.ts < self.max
@@ -50,14 +51,15 @@ class ToDense(object):
     """Transform a sparse spike train to a dense torch tensor of shape (x, y, p, time)
     with time unit defined by dt. Time accumulation is done with a max function."""
 
+    @wunits(None, (None, second))
     def __init__(
         self,
-        dt: units.UnitTime,  # Time scale of dense tensor
+        dt,  # Time scale of dense tensor
     ):
         self.dt = dt
 
     def __call__(self, sparse_spike_train):
-        time_scale = ((sparse_spike_train.time_scale * units.second).rescale(self.dt.units) / self.dt).magnitude
+        time_scale = sparse_spike_train.time_scale / self.dt
         duration = np.ceil(sparse_spike_train.duration * time_scale).astype(int)
         dense_spike_train = torch.zeros((sparse_spike_train.width, sparse_spike_train.height, 2, duration))
 

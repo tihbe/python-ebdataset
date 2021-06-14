@@ -51,7 +51,7 @@ In the code:
 ```python
 from ebdataset.vision import NMnist
 from ebdataset.vision.transforms import ToDense
-from quantities import ms
+from ebdataset import ms
 
 # With sparse representation:
 for spike_train, label in NMnist(path):

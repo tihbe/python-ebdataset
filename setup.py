@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="ebdataset",
-    version="0.0.2",
+    version="0.1.0",
     author="Ismael Balafrej - NECOTIS",
     author_email="ismael.balafrej@usherbrooke.ca",
     description="An event based dataset loader under one common API.",
@@ -17,7 +17,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "numpy>=1.14.3",
-        "quantities>=0.12.4",
+        "pint>=0.17",
         "tqdm>=4.45.0",
         "torch>=1.4.0",
         "torchvision>=0.5.0",
