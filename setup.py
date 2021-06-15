@@ -23,7 +23,7 @@ setup(
         "torchvision>=0.5.0",
         "h5py>=2.10.0",
     ],
-    python_requires=">=3.5.2",
+    python_requires=">=3.6",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3 :: Only",
