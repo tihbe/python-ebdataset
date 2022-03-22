@@ -1,3 +1,8 @@
+## Important notice
+
+If you're getting started in the realm of neuromorphic, I recommend you take a look at https://github.com/neuromorphs/tonic which is a similar library but more actively maintained. 
+
+
 ebdataset
 =========
 
